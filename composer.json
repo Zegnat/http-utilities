@@ -10,11 +10,9 @@
     ],
     "require": {
         "psr/http-message-implementation": "^1.0",
+        "psr/http-factory-implementation": "^1.0",
         "psr/http-message": "^1.0",
         "http-interop/http-factory": "^0.3"
-    },
-    "suggest": {
-        "nyholm/psr7": "A straight-forward PSR-7 and PSR-17 implementation."
     },
     "autoload": {
         "psr-4": {
