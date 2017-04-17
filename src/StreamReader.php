@@ -13,7 +13,7 @@ final class StreamReader
     public function __construct(StreamInterface $stream)
     {
         if ($stream->isSeekable() === false
-           || $stream->isReadable() === false
+            || $stream->isReadable() === false
         ) {
             throw new \RuntimeException();
         }
