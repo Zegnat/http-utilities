@@ -9,6 +9,7 @@ use Psr\Http\Message\StreamInterface;
 final class StreamReader
 {
     private $stream = null;
+    private $buffer = 4096;
 
     public function __construct(StreamInterface $stream)
     {
@@ -18,6 +19,21 @@ final class StreamReader
             throw new \RuntimeException();
         }
         $this->stream = $stream;
+    }
+    
+    public function inStream(string $string): int
+    {
+        $length = mb_strlen($string, '8bit');
+        $buffer = max($this->buffer, mb_strlen())
+        $this->stream->seek(0, SEEK_SET);
+        while (!$this->stream->eof()) {
+            $data = $this->stream->read($this->buffer);
+            $found = mb_strpos($data, $string, 0, '8bit');
+            if ($found !== false) {
+                return $found;
+            }
+        }
+        return -1;
     }
 
     public function tail(int $lines): string
@@ -29,7 +45,7 @@ final class StreamReader
             $lines -= 1;
         }
         while ($this->stream->tell() > 0 && $lines >= 0) {
-            $seek = min($this->stream->tell(), 4096);
+            $seek = min($this->stream->tell(), $this->buffer);
             $this->stream->seek(-$seek, SEEK_CUR);
             $chunk = $this->stream->read($seek);
             $output = $chunk . $output;
