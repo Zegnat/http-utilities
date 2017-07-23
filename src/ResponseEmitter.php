@@ -15,9 +15,9 @@ final class ResponseEmitter
             $response->getStatusCode()
         ];
         if (strlen($response->getReasonPhrase()) > 0) {
-            $header[] = $response->getReasonPhrase();
+            $status[] = $response->getReasonPhrase();
         }
-        header(implode(' ', $header));
+        header(implode(' ', $status));
         foreach ($response->getHeaders() as $name => $values) {
             foreach ($values as $value) {
                 header(sprintf('%s: %s', $name, $value), false);
