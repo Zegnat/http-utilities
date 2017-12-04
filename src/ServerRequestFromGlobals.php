@@ -33,7 +33,16 @@ final class ServerRequestFromGlobals
         ) {
             $serverRequest = $serverRequest->withProtocolVersion($protocol[1]);
         }
-        $headers = getallheaders();
+        if (function_exists('getallheaders'))  {
+            $headers = getallheaders();
+        } else {
+            $headers = [];
+            foreach ($_SERVER as $name => $value) {
+                if (substr($name, 0, 5) === 'HTTP_') {
+                    $headers[strtolower(str_replace('_', '-', substr($name, 5)))] = $value;
+                }
+            }
+        }
         if (false !== $headers) {
             foreach ($headers as $name => $value) {
                 $serverRequest = $serverRequest->withHeader($name, $value);
